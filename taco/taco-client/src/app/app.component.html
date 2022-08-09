@@ -1,0 +1,28 @@
+<div class="container-fluid">
+  <div class="navbar navbar-expand-sm bg-dark">
+    <a class="navbar-brand text-warning" [routerLink]="'/'">Taco</a>
+    <ul class="navbar-nav">
+      <li class="navbar-item pl-5">
+        <a class="navbar-link btn btn-warning pl-5 pr-5" [routerLink]="'/'">Home</a>
+      </li>
+      <li class="navbar-item ">
+        <a class="navbar-link btn btn-warning bg-dark border-dark text-warning pl-5 pr-5" [routerLink]="'/tacos'">Taco</a>
+      </li>
+      <li class="navbar-item ">
+        <a class="navbar-link btn btn-warning pr-5 pl-5" [routerLink]="'/design'">Design</a>
+      </li>
+      <li class="navbar-item ">
+        <a class="navbar-link btn btn-warning bg-dark text-warning border-dark pl-5 pr-5" [routerLink]="'/orders'">Orders</a>
+      </li>
+      <li class="navbar-item ">
+        <a class="navbar-link btn btn-warning pr-5 pl-5" [routerLink]="'/about'">About</a>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="container">
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+<div class="footer"></div>
