@@ -28,7 +28,7 @@ public class Taco {
     @Size(min=5, message = "name must be at least 5 characters long")
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Ingredient.class, cascade=CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Ingredient.class, cascade=CascadeType.MERGE)
     @NotNull(message = "You must choose at least 1 ingredient")
     @Size(min=1, message = "You must choose at least 1 ingredient")
     private List<Ingredient> ingredients;

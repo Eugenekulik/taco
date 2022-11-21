@@ -1,0 +1,22 @@
+<div>
+  <table class="table table-striped table-dark table-hover table-responsive">
+    <thead>
+    <tr>
+      <th>Order ID</th>
+      <th>User ID</th>
+      <th>placed at</th>
+      <th></th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let order of orders">
+      <td>{{order.id}}</td>
+      <td>{{order.user.fullname}}</td>
+      <td>{{order.placedAt}}</td>
+      <td class="col-1"><button class="btn btn-danger" (click)="deleteOrder(order.id)">Delete</button></td>
+      <td class="col-1"><button class="btn btn-warning">Edit</button></td>
+    </tr>
+    </tbody>
+  </table>
+</div>

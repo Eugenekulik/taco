@@ -1,7 +1,9 @@
 package by.eugenekulik.taco.config;
 
+import by.eugenekulik.taco.security.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -16,6 +18,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
+    @Autowired
+    private JwtFilter jwtFilter;
 
     @Bean
     public PasswordEncoder encoder(){
@@ -28,24 +32,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .userDetailsService(userDetailsService)
                 .passwordEncoder(encoder());
     }
-
-
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .cors().disable()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/design", "/orders")
-                .access("hasRole('ROLE_USER')")
-                .antMatchers("/", "/**").access("permitAll")
+                .antMatchers("/","/resources/**", "/register", "/auth").access("permitAll")
+                .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
                 .and()
-                .formLogin()
-                .and()
-                .addFilterBefore(new JwtFilter(),UsernamePasswordAuthenticationFilter.class)
-
-        ;
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

@@ -1,59 +1,37 @@
 package by.eugenekulik.taco.controller;
 
 
-import by.eugenekulik.taco.dao.JPAImpl.JpaOrderRepository;
-import by.eugenekulik.taco.dao.JPAImpl.JpaUserRepository;
+import by.eugenekulik.taco.dao.JpaOrderRepository;
 import by.eugenekulik.taco.domain.Order;
-import by.eugenekulik.taco.domain.Taco;
-import by.eugenekulik.taco.domain.User;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionStatus;
 
-import javax.validation.Valid;
-import java.security.Principal;
-import java.util.ArrayList;
-
-
-@Slf4j
-@Controller
-@RequestMapping("/orders")
-@SessionAttributes(value = {"order","tacoList"})
+@RestController
+@CrossOrigin("*")
+@RequestMapping(value = "order", produces = "application/json")
 public class OrderController {
 
-    private JpaOrderRepository orderRepository;
-    private JpaUserRepository userRepository;
-
     @Autowired
-    public OrderController(JpaOrderRepository jpaOrderRepository, JpaUserRepository userRepository){
-        this.userRepository = userRepository;
-        this.orderRepository = jpaOrderRepository;
+    private JpaOrderRepository orderRepository;
+
+
+    @GetMapping
+    public @ResponseBody Iterable<Order> getsAllOrders(){
+        return orderRepository.findAll();
     }
 
-    @GetMapping("/current")
-    public String orderForm(Model model) {
-        model.addAttribute("order", new Order());
-        return "orderForm";
-    }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Long> deleteOrder(@PathVariable long id){
+        orderRepository.deleteById(id);
+        return new ResponseEntity<>(id, HttpStatus.OK);
+    }
     @PostMapping
-    public  String processOrder(@Valid Order order, Errors errors, @SessionAttribute ArrayList<Taco> tacoList,
-                                SessionStatus sessionStatus,@AuthenticationPrincipal User user){
-        if(errors.hasErrors()){
-            return "orderForm";
-        }
-        for(Taco taco: tacoList){
-            order.addDesign(taco);
-        }
-        user = userRepository.findByUsername(user.getUsername());
-        order.setUser(user);
-        orderRepository.save(order);
-        sessionStatus.setComplete();
-        return "redirect:/";
+    public ResponseEntity<Order> createOrder(@RequestBody Order order){
+        if((order = orderRepository.save(order))!=null){
+            return new ResponseEntity<>(order, HttpStatus.OK);
+        } else return new ResponseEntity<>(order, HttpStatus.BAD_REQUEST);
     }
 }

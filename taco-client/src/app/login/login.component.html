@@ -1,0 +1,91 @@
+<div class="container d-flex justify-content-center">
+  <div class="card col-4 mt-5 bg-opacity-50 bg-secondary align-items-center">
+    <h2>Login</h2>
+    <form #loginForm="ngForm" (ngSubmit)="doLogin(loginForm)"
+          class="bg-opacity-25 m-2 col-12 d-flex flex-column align-items-center" >
+      <input ngModel class="col-12 form-control-lg bg-opacity-50 bg-white mb-3"
+             type="text"
+             name="username"
+             id="username"
+             placeholder="Enter name">
+      <input class="form-control-lg col-12 bg-opacity-50 bg-white mb-3"
+             ngModel
+             type="password"
+             name="password"
+             id="password"
+             placeholder="Enter password">
+      <button class="btn btn-success col-6" type="submit">Login</button>
+    </form>
+    <button type="button" data-bs-target="#registration-modal"
+            class="btn btn-white btn-sm bg-opacity-75 col-8" data-bs-toggle="modal">
+      <span class="h4 text-black">Registration</span>
+    </button>
+  </div>
+</div>
+
+<div class="modal" id="registration-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">Registration</div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form #registrateForm="ngForm" (ngSubmit)="registrate(registrateForm)"
+              class="bg-opacity-25 m-2 col-12 d-flex flex-column align-items-center" >
+          <input ngModel class="col-12 form-control-lg bg-opacity-50 bg-white mb-3"
+                 type="text"
+                 name="username"
+                 id="r-username"
+                 placeholder="Enter name">
+          <input class="form-control-lg col-12 bg-opacity-50 bg-white mb-3"
+                 ngModel
+                 type="password"
+                 name="password"
+                 id="r-password"
+                 placeholder="Enter password">
+          <input class="form-control-lg col-12 bg-opacity-50 bg-white mb-3"
+                 ngModel
+                 type="text"
+                 name="fullname"
+                 id="fullname"
+                 placeholder="Enter full name">
+          <input class="form-control-lg col-12 bg-opacity-50 bg-white mb-3"
+                 ngModel
+                 type="text"
+                 name="state"
+                 id="state"
+                 placeholder="Enter state">
+          <input class="form-control-lg col-12 bg-opacity-50 bg-white mb-3"
+                 ngModel
+                 type="text"
+                 name="city"
+                 id="city"
+                 placeholder="Enter city">
+          <input class="form-control-lg col-12 bg-opacity-50 bg-white mb-3"
+                 ngModel
+                 type="text"
+                 name="street"
+                 id="street"
+                 placeholder="Enter street">
+          <input class="form-control-lg col-12 bg-opacity-50 bg-white mb-3"
+                 ngModel
+                 type="text"
+                 name="zip"
+                 id="zip"
+                 placeholder="Enter zip">
+          <input class="form-control-lg col-12 bg-opacity-50 bg-white mb-3"
+                 ngModel
+                 type="text"
+                 name="phone"
+                 id="phone"
+                 placeholder="Enter phone">
+          <button class="btn btn-success col-6" type="submit" >Registrate</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button id="closeModal" type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

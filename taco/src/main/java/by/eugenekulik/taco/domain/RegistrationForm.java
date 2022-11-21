@@ -2,7 +2,6 @@ package by.eugenekulik.taco.domain;
 
 
 import lombok.Data;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Data
 public class RegistrationForm {
@@ -14,9 +13,15 @@ public class RegistrationForm {
     private String state;
     private String zip;
     private String phone;
-    public User toUser(PasswordEncoder passwordEncoder) {
-        return new User(
-                username, passwordEncoder.encode(password),
-                fullname, street, city, state, zip, phone);
+    public User toUser() {
+        return User.builder()
+                .username(username)
+                .password(password)
+                .fullname(fullname)
+                .street(street)
+                .state(state)
+                .city(city)
+                .zip(zip)
+                .phoneNumber(phone).build();
     }
 }

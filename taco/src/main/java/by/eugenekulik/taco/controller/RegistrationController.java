@@ -1,24 +1,26 @@
 package by.eugenekulik.taco.controller;
 
-import by.eugenekulik.taco.dao.JPAImpl.JpaUserRepository;
 import by.eugenekulik.taco.domain.RegistrationForm;
+import by.eugenekulik.taco.domain.User;
+import by.eugenekulik.taco.dto.JwtUserAuthorizationDto;
+import by.eugenekulik.taco.security.JwtProvider;
+import by.eugenekulik.taco.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("/register")
+@RestController
+@RequestMapping(value = "/register",produces = "application/json")
 public class RegistrationController {
 
-    private JpaUserRepository userRepository;
-    private PasswordEncoder encoder;
+    @Autowired
+    private UserService userService;
 
-    public RegistrationController(JpaUserRepository userRepository, PasswordEncoder encoder){
-        this.encoder = encoder;
-        this.userRepository = userRepository;
-    }
+    @Autowired
+    private JwtProvider provider;
+
+    @Autowired
+    private PasswordEncoder encoder;
 
     @GetMapping
     public String registerForm(){
@@ -26,8 +28,12 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public String proccessRegistration(RegistrationForm registrationForm){
-        userRepository.save(registrationForm.toUser(encoder));
-        return "redirect:/login";
+    public JwtUserAuthorizationDto proccessRegistration(@RequestBody RegistrationForm registrationForm){
+        User user = userService.registrate(registrationForm.toUser());
+        if(user!=null) {
+            String token = provider.generateToken(user.getUsername());
+            return new JwtUserAuthorizationDto(token,user);
+        }
+        return null;
     }
 }

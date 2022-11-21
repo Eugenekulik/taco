@@ -1,0 +1,17 @@
+<div class="container glass-body mt-4">
+  <div class="h1">
+    Tacos
+  </div>
+  <div class="row m-2">
+    <div class="glass-body card col-4" *ngFor="let taco of tacos">
+      <div class="card-body">
+        <kbd class="text-warning">{{taco.name}}</kbd>
+        <div class="list-group">
+          <div class="glass-body list-group-item" *ngFor="let ingredient of taco.ingredients">{{ingredient.name}}</div>
+        </div>
+      </div>
+      <div class="card-footer bottom">
+      </div>
+    </div>
+  </div>
+</div>
